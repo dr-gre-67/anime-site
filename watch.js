@@ -9,6 +9,8 @@ const watchDesc = document.getElementById("watchDesc");
 const epList = document.getElementById("epList");
 const epTitle = document.getElementById("epTitle");
 
+let autoNextTimer = null;
+
 if (!anime) {
   document.title = "Аниме не найдено — AnimeVerse";
   watchHead.innerHTML = "";
@@ -99,8 +101,6 @@ function loadYtApi() {
 function getAutoNextMin() {
   return Number(localStorage.getItem("av-autonext-min") || 24);
 }
-
-let autoNextTimer = null;
 
 function stopAutoNext() {
   if (autoNextTimer) {
@@ -439,6 +439,7 @@ function playEpisode(num, byUser) {
     status.className = "player-status";
     status.textContent = "⏳ подбираем источник…";
     stage.appendChild(status);
+    playerBox.appendChild(stage);
     playSources(num, sources);
     setTimeout(() => {
       if (!stage.isConnected || stage.dataset.ok === "1") return;
