@@ -65,6 +65,37 @@ function toEmbedUrl(raw) {
   return "";
 }
 
+function kindOfSource(url) {
+  const yt = url.match(/youtube\.com\/embed\/([\w-]{6,})/);
+  if (yt) return { kind: "youtube", videoId: yt[1] };
+  return { kind: "iframe" };
+}
+
+let ytApiPromise = null;
+
+function loadYtApi() {
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise(resolve => {
+    if (window.YT && window.YT.Player) {
+      resolve(true);
+      return;
+    }
+    const timer = setTimeout(() => resolve(false), 10000);
+    window.onYouTubeIframeAPIReady = () => {
+      clearTimeout(timer);
+      resolve(true);
+    };
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    script.onerror = () => {
+      clearTimeout(timer);
+      resolve(false);
+    };
+    document.head.appendChild(script);
+  });
+  return ytApiPromise;
+}
+
 function getAutoNextMin() {
   return Number(localStorage.getItem("av-autonext-min") || 24);
 }
@@ -223,13 +254,172 @@ function renderEpList(activeNum) {
   });
 }
 
+function buildSources(num, ep) {
+  const customUrls = getCustomUrls();
+  const list = [];
+  const custom = toEmbedUrl(customUrls[num] || "");
+  if (custom) list.push({ ...kindOfSource(custom), url: custom, custom: true });
+  const main = toEmbedUrl(ep.url || "");
+  if (main && !list.some(s => s.url === main)) list.push({ ...kindOfSource(main), url: main });
+  const alt = toEmbedUrl(ep.alt || "");
+  if (alt && !list.some(s => s.url === alt)) list.push({ kind: "iframe", url: alt, mirror: true });
+  return list;
+}
+
+function buildUrlForm(num) {
+  const form = document.createElement("div");
+  form.className = "url-form";
+  const input = document.createElement("input");
+  input.className = "url-input";
+  input.type = "url";
+  input.placeholder = "https://www.youtube.com/watch?v=...";
+  const submit = () => {
+    const u = toEmbedUrl(input.value);
+    if (!u) {
+      input.classList.add("bad");
+      setTimeout(() => input.classList.remove("bad"), 800);
+      return;
+    }
+    saveCustomUrl(num, u);
+    playEpisode(num, false);
+  };
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") submit();
+  });
+  const btn = document.createElement("button");
+  btn.className = "btn btn-primary";
+  btn.textContent = "Играть";
+  btn.addEventListener("click", submit);
+  form.append(input, btn);
+  return form;
+}
+
+function showEmptyHint(num, box) {
+  const hint = document.createElement("div");
+  hint.className = "player-hint";
+  const icon = document.createElement("div");
+  icon.className = "player-hint-icon";
+  icon.textContent = "🎬";
+  const heading = document.createElement("h3");
+  heading.textContent = "Видео пока не добавлено";
+  const text = document.createElement("p");
+  text.innerHTML = "Вставь ссылку на видео — она сохранится в браузере.<br>" +
+    "YouTube: обычная ссылка или <span class='mono'>youtube.com/embed/VIDEO_ID</span><br>" +
+    "VK: <span class='mono'>vk.com/video_ext.php?oid=...&amp;id=...</span> (код встраивания)";
+  hint.append(icon, heading, text, buildUrlForm(num));
+  box.appendChild(hint);
+}
+
+function showFailHint(num, stage) {
+  stage.innerHTML = "";
+  const hint = document.createElement("div");
+  hint.className = "player-hint";
+  const icon = document.createElement("div");
+  icon.className = "player-hint-icon";
+  icon.textContent = "📡";
+  const heading = document.createElement("h3");
+  heading.textContent = "Ни один источник не открылся";
+  const text = document.createElement("p");
+  text.innerHTML = "Видео недоступно в твоей стране, а зеркало тоже не отвечает.<br>" +
+    "Вставь свою ссылку — она сохранится в браузере.";
+  hint.append(icon, heading, text, buildUrlForm(num));
+  stage.appendChild(hint);
+}
+
+function onSourceOk(src, stage, status) {
+  if (status) status.remove();
+  if (src.mirror) {
+    const chip = document.createElement("div");
+    chip.className = "mirror-chip";
+    chip.textContent = "🔁 зеркало (Rutube)";
+    stage.appendChild(chip);
+  }
+}
+
+function playSources(num, sources) {
+  const stage = playerBox.querySelector(".player-stage");
+  if (!stage) return;
+  const status = stage.querySelector(".player-status");
+
+  const tryAt = i => {
+    if (!stage.isConnected) return;
+    if (i >= sources.length) {
+      showFailHint(num, stage);
+      return;
+    }
+    const src = sources[i];
+    if (status && status.isConnected) {
+      status.textContent = "⏳ подбираем источник (" + (i + 1) + "/" + sources.length + ")…";
+    }
+    stage.querySelectorAll("iframe, .player-mount, .player-hint").forEach(el => el.remove());
+
+    if (src.kind === "youtube") {
+      loadYtApi().then(ok => {
+        if (!stage.isConnected) return;
+        if (!ok) {
+          tryAt(i + 1);
+          return;
+        }
+        let settled = false;
+        let player = null;
+        const mount = document.createElement("div");
+        mount.className = "player-mount";
+        stage.appendChild(mount);
+        const timer = setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          try {
+            if (player && player.destroy) player.destroy();
+          } catch (e) {}
+          tryAt(i + 1);
+        }, 10000);
+        try {
+          player = new YT.Player(mount, {
+            videoId: src.videoId,
+            playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
+            events: {
+              onReady: () => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                const frame = player.getIframe ? player.getIframe() : null;
+                if (frame) frame.className = "player-frame";
+                onSourceOk(src, stage, status);
+              },
+              onError: () => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                tryAt(i + 1);
+              }
+            }
+          });
+        } catch (e) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timer);
+          tryAt(i + 1);
+        }
+      });
+    } else {
+      const iframe = document.createElement("iframe");
+      iframe.className = "player-frame";
+      iframe.src = src.url;
+      iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+      iframe.allowFullscreen = true;
+      stage.appendChild(iframe);
+      onSourceOk(src, stage, status);
+    }
+  };
+  tryAt(0);
+}
+
 function playEpisode(num, byUser) {
   const ep = anime.playlist.find(e => e.num === num);
   if (!ep) return;
 
-  const customUrls = getCustomUrls();
-  const epUrl = toEmbedUrl(customUrls[num] || ep.url || "");
-  let hasCustom = false;
+  const sources = buildSources(num, ep);
+  const hasCustom = sources.length > 0 && sources[0].custom;
 
   const progress = getProgress();
   progress.lastEp = num;
@@ -239,52 +429,17 @@ function playEpisode(num, byUser) {
   playerBox.innerHTML = "";
   playerActions.innerHTML = "";
 
-  if (!epUrl) {
-    const hint = document.createElement("div");
-    hint.className = "player-hint";
-    const icon = document.createElement("div");
-    icon.className = "player-hint-icon";
-    icon.textContent = "🎬";
-    const heading = document.createElement("h3");
-    heading.textContent = "Видео пока не добавлено";
-    const text = document.createElement("p");
-    text.innerHTML = "Вставь ссылку на видео — она сохранится в браузере.<br>" +
-      "YouTube: обычная ссылка или <span class='mono'>youtube.com/embed/VIDEO_ID</span><br>" +
-      "VK: <span class='mono'>vk.com/video_ext.php?oid=...&amp;id=...</span> (код встраивания)";
-    const form = document.createElement("div");
-    form.className = "url-form";
-    const input = document.createElement("input");
-    input.className = "url-input";
-    input.type = "url";
-    input.placeholder = "https://www.youtube.com/watch?v=...";
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") submitUrl();
-    });
-    const submit = () => {
-      const u = toEmbedUrl(input.value);
-      if (!u) {
-        input.classList.add("bad");
-        setTimeout(() => input.classList.remove("bad"), 800);
-        return;
-      }
-      saveCustomUrl(num, u);
-      playEpisode(num, false);
-    };
-    const btn = document.createElement("button");
-    btn.className = "btn btn-primary";
-    btn.textContent = "Играть";
-    btn.addEventListener("click", submit);
-    form.append(input, btn);
-    hint.append(icon, heading, text, form);
-    playerBox.appendChild(hint);
+  if (!sources.length) {
+    showEmptyHint(num, playerBox);
   } else {
-    const iframe = document.createElement("iframe");
-    iframe.className = "player-frame";
-    iframe.src = epUrl;
-    iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
-    iframe.allowFullscreen = true;
-    playerBox.appendChild(iframe);
-    if (customUrls[num]) hasCustom = true;
+    const stage = document.createElement("div");
+    stage.className = "player-stage";
+    const status = document.createElement("div");
+    status.className = "player-status";
+    status.textContent = "⏳ подбираем источник…";
+    stage.appendChild(status);
+    playerBox.appendChild(stage);
+    playSources(num, sources);
   }
 
   const prev = anime.playlist.find(e => e.num === num - 1);

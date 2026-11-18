@@ -2,48 +2,48 @@ const DEMO_URL = "https://www.youtube.com/embed/dQw4w9WgXcQ";
 
 const CUSTOM_PLAYLISTS = {
   1: [
-    { num: 1, title: "Официальный трейлер (Crunchyroll Dubs)", url: "https://www.youtube.com/watch?v=HJaUvV9Hwgs" },
-    { num: 2, title: "Трейлер финального сезона", url: "https://www.youtube.com/watch?v=MUCN-JwUvbY" },
-    { num: 3, title: "Трейлер финального сезона — часть 2", url: "https://www.youtube.com/watch?v=4wm8lxLwbvo" },
-    { num: 4, title: "Трейлер финальных глав", url: "https://www.youtube.com/watch?v=8pEg8NrdL_Y" }
+    { num: 1, title: "Официальный трейлер (Crunchyroll Dubs)", url: "https://www.youtube.com/watch?v=HJaUvV9Hwgs", alt: "https://rutube.ru/play/embed/dbe0f3bf1aab168ab4d7d207f7321f05" },
+    { num: 2, title: "Трейлер финального сезона", url: "https://www.youtube.com/watch?v=MUCN-JwUvbY", alt: "https://rutube.ru/play/embed/bbfb496ca02b349691296e6a794c6e2c" },
+    { num: 3, title: "Трейлер финального сезона — часть 2", url: "https://www.youtube.com/watch?v=4wm8lxLwbvo", alt: "https://rutube.ru/play/embed/bbfb496ca02b349691296e6a794c6e2c" },
+    { num: 4, title: "Трейлер финальных глав", url: "https://www.youtube.com/watch?v=8pEg8NrdL_Y", alt: "https://rutube.ru/play/embed/bbfb496ca02b349691296e6a794c6e2c" }
   ],
   2: [
-    { num: 1, title: "Официальный трейлер (Crunchyroll)", url: "https://www.youtube.com/watch?v=t6MXHczeEqc" }
+    { num: 1, title: "Официальный трейлер (Crunchyroll)", url: "https://www.youtube.com/watch?v=t6MXHczeEqc", alt: "https://rutube.ru/play/embed/bce4a8fc37b0c938ece721316df60c74" }
   ],
   3: [
-    { num: 1, title: "Официальный трейлер (VIZ)", url: "https://www.youtube.com/watch?v=Poo5lqoWSGw" },
-    { num: 2, title: "Трейлер аниме (VIZ)", url: "https://www.youtube.com/watch?v=X4e3oZaPtaE" }
+    { num: 1, title: "Официальный трейлер (VIZ)", url: "https://www.youtube.com/watch?v=Poo5lqoWSGw", alt: "https://rutube.ru/play/embed/e6338d6fd7c5a21d5602c3198bdc1774" },
+    { num: 2, title: "Трейлер аниме (VIZ)", url: "https://www.youtube.com/watch?v=X4e3oZaPtaE", alt: "https://rutube.ru/play/embed/e6338d6fd7c5a21d5602c3198bdc1774" }
   ],
   4: [
-    { num: 1, title: "Официальный трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=RuyHIkXdYf8" }
+    { num: 1, title: "Официальный трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=RuyHIkXdYf8", alt: "https://rutube.ru/play/embed/98b62fc60840719f083414685bd7afe0" }
   ],
   5: [
-    { num: 1, title: "Трейлер (Crunchyroll)", url: "https://www.youtube.com/watch?v=pkKu9hLT-t8" },
-    { num: 2, title: "Трейлер «Игра на истребление»", url: "https://www.youtube.com/watch?v=MPfZhgLiK6w" }
+    { num: 1, title: "Трейлер (Crunchyroll)", url: "https://www.youtube.com/watch?v=pkKu9hLT-t8", alt: "https://rutube.ru/play/embed/e3a8e7b748e8decf52246832110072b6" },
+    { num: 2, title: "Трейлер «Игра на истребление»", url: "https://www.youtube.com/watch?v=MPfZhgLiK6w", alt: "https://rutube.ru/play/embed/6e4359d5eb524499f40f111399db776f" }
   ],
   6: [
     { num: 1, title: "Официальный английский трейлер", url: "https://www.youtube.com/watch?v=D9dap98L5nQ" }
   ],
   7: [
-    { num: 1, title: "Официальный английский трейлер (VIZ)", url: "https://www.youtube.com/watch?v=yeUpnIKt6k4" }
+    { num: 1, title: "Официальный английский трейлер (VIZ)", url: "https://www.youtube.com/watch?v=yeUpnIKt6k4", alt: "https://rutube.ru/play/embed/1144d34e66695232f77c8eeee7462ed0" }
   ],
   8: [
-    { num: 1, title: "Трейлер 1 сезона (uncut)", url: "https://www.youtube.com/watch?v=vGuQeQsoRgU" },
-    { num: 2, title: "Официальный английский трейлер", url: "https://www.youtube.com/watch?v=ETHpMMV8rJU" },
-    { num: 3, title: "Трейлер 2 сезона (√A)", url: "https://www.youtube.com/watch?v=v9fgZUBfZjk" }
+    { num: 1, title: "Трейлер 1 сезона (uncut)", url: "https://www.youtube.com/watch?v=vGuQeQsoRgU", alt: "https://rutube.ru/play/embed/9224c0a94377e1323d70061900327163" },
+    { num: 2, title: "Официальный английский трейлер", url: "https://www.youtube.com/watch?v=ETHpMMV8rJU", alt: "https://rutube.ru/play/embed/9224c0a94377e1323d70061900327163" },
+    { num: 3, title: "Трейлер 2 сезона (√A)", url: "https://www.youtube.com/watch?v=v9fgZUBfZjk", alt: "https://rutube.ru/play/embed/9224c0a94377e1323d70061900327163" }
   ],
   9: [
-    { num: 1, title: "Трейлер финального сезона (Crunchyroll)", url: "https://www.youtube.com/watch?v=pxbEWUjh6E4" },
-    { num: 2, title: "Тизер финального сезона", url: "https://www.youtube.com/watch?v=ErlRR6b7A-E" },
-    { num: 3, title: "Трейлер 7 сезона", url: "https://www.youtube.com/watch?v=T5HMoxJRhRY" },
-    { num: 4, title: "Трейлер 6 сезона", url: "https://www.youtube.com/watch?v=9Y_eKiT-irU" }
+    { num: 1, title: "Трейлер финального сезона (Crunchyroll)", url: "https://www.youtube.com/watch?v=pxbEWUjh6E4", alt: "https://rutube.ru/play/embed/ac7bb2b65dfdabc1bb1ce6d1f74518cc" },
+    { num: 2, title: "Тизер финального сезона", url: "https://www.youtube.com/watch?v=ErlRR6b7A-E", alt: "https://rutube.ru/play/embed/ac7bb2b65dfdabc1bb1ce6d1f74518cc" },
+    { num: 3, title: "Трейлер 7 сезона", url: "https://www.youtube.com/watch?v=T5HMoxJRhRY", alt: "https://rutube.ru/play/embed/ac7bb2b65dfdabc1bb1ce6d1f74518cc" },
+    { num: 4, title: "Трейлер 6 сезона", url: "https://www.youtube.com/watch?v=9Y_eKiT-irU", alt: "https://rutube.ru/play/embed/ac7bb2b65dfdabc1bb1ce6d1f74518cc" }
   ],
   10: [
-    { num: 1, title: "Официальный трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=luP4sIz60mA" },
-    { num: 2, title: "Официальный английский трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=TQK9By9qQiw" }
+    { num: 1, title: "Официальный трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=luP4sIz60mA", alt: "https://rutube.ru/play/embed/3a1c4ff2397081bb6a2615d61bdc322a" },
+    { num: 2, title: "Официальный английский трейлер (GKIDS)", url: "https://www.youtube.com/watch?v=TQK9By9qQiw", alt: "https://rutube.ru/play/embed/32fba5190be2e27413deea1c30124c4c" }
   ],
   11: [
-    { num: 1, title: "Официальный трейлер (VIZ)", url: "https://www.youtube.com/watch?v=22R0j8UKRzY" }
+    { num: 1, title: "Официальный трейлер (VIZ)", url: "https://www.youtube.com/watch?v=22R0j8UKRzY", alt: "https://rutube.ru/play/embed/1144d34e66695232f77c8eeee7462ed0" }
   ],
   12: [
     { num: 1, title: "Серия 1 — демо-встройка (замени ссылку)", url: DEMO_URL }
