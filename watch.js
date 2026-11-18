@@ -80,7 +80,7 @@ function loadYtApi() {
       resolve(true);
       return;
     }
-    const timer = setTimeout(() => resolve(false), 10000);
+    const timer = setTimeout(() => resolve(false), 7000);
     window.onYouTubeIframeAPIReady = () => {
       clearTimeout(timer);
       resolve(true);
@@ -357,6 +357,7 @@ function playSources(num, sources) {
       loadYtApi().then(ok => {
         if (!stage.isConnected) return;
         if (!ok) {
+          if (status && status.isConnected) status.textContent = "📺 YouTube не отвечает — включаю зеркало…";
           tryAt(i + 1);
           return;
         }
