@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeVerse — сайт про аниме</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="#">
+        <span class="logo-icon">ア</span>
+        <span class="logo-text">Anime<b>Verse</b></span>
+      </a>
+      <nav class="nav">
+        <a href="#catalog">Каталог</a>
+        <a href="#top">Топ</a>
+        <a href="#" id="favLink">Избранное <span id="favCount" class="fav-count">0</span></a>
+      </nav>
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+        <input type="text" id="search" placeholder="Поиск аниме..." autocomplete="off">
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">★ Сезон 2026</div>
+        <h1>Твои аниме <span class="gradient-text">в одном месте</span></h1>
+        <p>Каталог популярных тайтлов, рейтинги, жанры и избранное. Всё под рукой.</p>
+        <a href="#catalog" class="btn btn-primary">Смотреть каталог</a>
+      </div>
+      <div class="hero-card">
+        <div class="poster big" data-poster>凄い</div>
+        <div class="hero-card-info">
+          <div class="hero-card-title">Атака титанов</div>
+          <div class="hero-card-meta">★ 9.0 · Экшен, Драма · 4 сезона</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="top" class="section">
+      <h2>Топ по рейтингу</h2>
+      <div class="top-list" id="topList"></div>
+    </section>
+
+    <section id="catalog" class="section">
+      <div class="section-head">
+        <h2>Каталог</h2>
+        <div class="genre-filters" id="genreFilters"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="emptyMsg" hidden>Ничего не найдено 😔 Попробуй другой запрос.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>AnimeVerse © 2026 — фанатский сайт про аниме</span>
+      <span>Сделано с ❤️ и 魂</span>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

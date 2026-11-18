@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Смотреть — AnimeVerse</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-icon">ア</span>
+        <span class="logo-text">Anime<b>Verse</b></span>
+      </a>
+      <nav class="nav">
+        <a href="index.html#catalog">← Назад в каталог</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container watch-main">
+    <div class="watch-head" id="watchHead"></div>
+    <div class="watch-layout">
+      <div class="player-side">
+        <div class="player-box" id="playerBox"></div>
+        <div class="player-actions" id="playerActions"></div>
+        <div class="watch-desc" id="watchDesc"></div>
+      </div>
+      <aside class="ep-side">
+        <h3 id="epTitle">Серии</h3>
+        <div class="ep-list" id="epList"></div>
+        <div class="bulk-import">
+          <button class="btn btn-ghost bulk-toggle" id="bulkToggle">📋 Вставить список ссылок</button>
+          <div class="bulk-panel hidden" id="bulkPanel">
+            <textarea class="bulk-textarea" id="bulkText" rows="7" placeholder="По одной ссылке на строку — лягут на серии 1, 2, 3…"></textarea>
+            <div class="bulk-row">
+              <button class="btn btn-primary" id="bulkApply">Разложить по сериям</button>
+              <button class="btn btn-ghost" id="bulkClear">Убрать все свои ссылки</button>
+            </div>
+            <div class="bulk-status" id="bulkStatus"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>AnimeVerse © 2026 — фанатский сайт про аниме</span>
+      <span>Сделано с ❤️ и 魂</span>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="watch.js"></script>
+</body>
+</html>
