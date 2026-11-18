@@ -373,7 +373,7 @@ function playSources(num, sources) {
             if (player && player.destroy) player.destroy();
           } catch (e) {}
           tryAt(i + 1);
-        }, 10000);
+        }, 6000);
         try {
           player = new YT.Player(mount, {
             videoId: src.videoId,
