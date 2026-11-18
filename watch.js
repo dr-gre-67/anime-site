@@ -10,6 +10,7 @@ const epList = document.getElementById("epList");
 const epTitle = document.getElementById("epTitle");
 
 let autoNextTimer = null;
+let ytApiPromise = null;
 
 if (!anime) {
   document.title = "Аниме не найдено — AnimeVerse";
@@ -72,8 +73,6 @@ function kindOfSource(url) {
   if (yt) return { kind: "youtube", videoId: yt[1] };
   return { kind: "iframe" };
 }
-
-let ytApiPromise = null;
 
 function loadYtApi() {
   if (ytApiPromise) return ytApiPromise;
