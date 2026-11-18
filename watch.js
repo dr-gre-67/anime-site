@@ -362,18 +362,22 @@ function playSources(num, sources) {
           tryAt(i + 1);
           return;
         }
-        let settled = false;
+        let ready = false;
+        let moved = false;
         let player = null;
         const mount = document.createElement("div");
         mount.className = "player-mount";
         stage.appendChild(mount);
-        const timer = setTimeout(() => {
-          if (settled) return;
-          settled = true;
+        const moveToNext = () => {
+          if (moved) return;
+          moved = true;
           try {
             if (player && player.destroy) player.destroy();
           } catch (e) {}
           tryAt(i + 1);
+        };
+        const timer = setTimeout(() => {
+          if (!ready) moveToNext();
         }, 6000);
         try {
           player = new YT.Player(mount, {
@@ -381,26 +385,21 @@ function playSources(num, sources) {
             playerVars: { autoplay: 1, playsinline: 1, rel: 0 },
             events: {
               onReady: () => {
-                if (settled) return;
-                settled = true;
-                clearTimeout(timer);
+                if (moved) return;
+                ready = true;
                 const frame = player.getIframe ? player.getIframe() : null;
                 if (frame) frame.className = "player-frame";
                 onSourceOk(src, stage, status);
               },
               onError: () => {
-                if (settled) return;
-                settled = true;
                 clearTimeout(timer);
-                tryAt(i + 1);
+                moveToNext();
               }
             }
           });
         } catch (e) {
-          if (settled) return;
-          settled = true;
           clearTimeout(timer);
-          tryAt(i + 1);
+          moveToNext();
         }
       });
     } else {
