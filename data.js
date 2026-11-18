@@ -22,7 +22,7 @@ const CUSTOM_PLAYLISTS = {
     { num: 2, title: "Трейлер «Игра на истребление»", url: "https://www.youtube.com/watch?v=MPfZhgLiK6w", alt: "https://rutube.ru/play/embed/6e4359d5eb524499f40f111399db776f" }
   ],
   6: [
-    { num: 1, title: "Официальный английский трейлер", url: "https://www.youtube.com/watch?v=D9dap98L5nQ" }
+    { num: 1, title: "Официальный английский трейлер", url: "https://www.youtube.com/watch?v=D9dap98L5nQ", alt: "https://rutube.ru/play/embed/b6757271725416a14f757943caab8380" }
   ],
   7: [
     { num: 1, title: "Официальный английский трейлер (VIZ)", url: "https://www.youtube.com/watch?v=yeUpnIKt6k4", alt: "https://rutube.ru/play/embed/1144d34e66695232f77c8eeee7462ed0" }
@@ -46,7 +46,7 @@ const CUSTOM_PLAYLISTS = {
     { num: 1, title: "Официальный трейлер (VIZ)", url: "https://www.youtube.com/watch?v=22R0j8UKRzY", alt: "https://rutube.ru/play/embed/1144d34e66695232f77c8eeee7462ed0" }
   ],
   12: [
-    { num: 1, title: "Серия 1 — демо-встройка (замени ссылку)", url: DEMO_URL }
+    { num: 1, title: "Серия 1 — демо-встройка (замени ссылку)", url: DEMO_URL, alt: "https://rutube.ru/play/embed/f818bc5fd13ed3105246bd0343c0d27c" }
   ]
 };
 
