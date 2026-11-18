@@ -259,10 +259,10 @@ function buildSources(num, ep) {
   const list = [];
   const custom = toEmbedUrl(customUrls[num] || "");
   if (custom) list.push({ ...kindOfSource(custom), url: custom, custom: true });
+  const alt = toEmbedUrl(ep.alt || "");
+  if (alt) list.push({ kind: "iframe", url: alt, mirror: true });
   const main = toEmbedUrl(ep.url || "");
   if (main && !list.some(s => s.url === main)) list.push({ ...kindOfSource(main), url: main });
-  const alt = toEmbedUrl(ep.alt || "");
-  if (alt && !list.some(s => s.url === alt)) list.push({ kind: "iframe", url: alt, mirror: true });
   return list;
 }
 
