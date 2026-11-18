@@ -327,6 +327,7 @@ function showFailHint(num, stage) {
 }
 
 function onSourceOk(src, stage, status) {
+  stage.dataset.ok = "1";
   if (status) status.remove();
   if (src.mirror) {
     const chip = document.createElement("div");
@@ -439,8 +440,25 @@ function playEpisode(num, byUser) {
     status.className = "player-status";
     status.textContent = "⏳ подбираем источник…";
     stage.appendChild(status);
-    playerBox.appendChild(stage);
     playSources(num, sources);
+    setTimeout(() => {
+      if (!stage.isConnected || stage.dataset.ok === "1") return;
+      const alt = sources.find(s => s.mirror);
+      if (!alt) return;
+      stage.querySelectorAll("iframe, .player-mount, .player-hint").forEach(el => el.remove());
+      const iframe = document.createElement("iframe");
+      iframe.className = "player-frame";
+      iframe.src = alt.url;
+      iframe.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
+      iframe.allowFullscreen = true;
+      stage.appendChild(iframe);
+      const st = stage.querySelector(".player-status");
+      if (st) st.remove();
+      const chip = document.createElement("div");
+      chip.className = "mirror-chip";
+      chip.textContent = "🔁 зеркало (Rutube)";
+      stage.appendChild(chip);
+    }, 15000);
   }
 
   const prev = anime.playlist.find(e => e.num === num - 1);
